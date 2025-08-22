@@ -51,7 +51,10 @@ class ResponsesSampler(SamplerBase):
                     response = self.client.responses.create(
                         model=self.model,
                         input=message_list,
+                        temperature=self.temperature,
                         reasoning=reasoning,
+                        store=False,
+                        max_output_tokens=self.max_tokens,
                     )
                 else:
                     response = self.client.responses.create(
@@ -76,6 +79,7 @@ class ResponsesSampler(SamplerBase):
                 )
             except openai.BadRequestError as e:
                 print("Bad Request Error", e)
+                print(message_list)
                 return SamplerResponse(
                     response_text="",
                     response_metadata={"usage": None},
