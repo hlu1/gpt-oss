@@ -51,8 +51,18 @@ class GPQAEval(Eval):
                 assert n_repeats == 1, "n_repeats only supported for num_examples = None"
                 examples = rng.sample(examples, num_examples)
 
-        examples = examples * n_repeats
+        # examples = examples * n_repeats
+        # examples = [example | {"permutation": rng.sample(range(4), 4)} for example in examples]
+
+        prefix = "A chemist performed two reactions by taking two unknown compounds and treated them separately with two different reducing agents. Select the proper starting material for both of the reactions."
+        for example in examples:
+            if example["Question"].startswith(prefix):
+                bad_example = example
+
+        examples = [bad_example]
         examples = [example | {"permutation": rng.sample(range(4), 4)} for example in examples]
+        examples = examples * 10
+
         self.examples = examples
         self.n_repeats = n_repeats
         self.n_threads = n_threads

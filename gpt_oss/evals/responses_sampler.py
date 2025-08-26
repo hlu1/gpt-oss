@@ -25,6 +25,7 @@ class ResponsesSampler(SamplerBase):
         self.client = OpenAI(base_url=base_url, timeout=24*60*60)
         self.model = model
         self.developer_message = developer_message
+        temperature = 0.0
         self.temperature = temperature
         self.max_tokens = max_tokens
         self.image_format = "url"
@@ -54,7 +55,7 @@ class ResponsesSampler(SamplerBase):
                         temperature=self.temperature,
                         reasoning=reasoning,
                         store=False,
-                        max_output_tokens=self.max_tokens,
+                        # max_output_tokens=self.max_tokens,
                     )
                 else:
                     response = self.client.responses.create(
